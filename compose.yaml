@@ -1,0 +1,165 @@
+name: local-env
+
+services:
+  technitium:
+    image: ${TECHNITIUM_IMAGE:-technitium/dns-server:latest}
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-UTC}
+      DNS_SERVER_DOMAIN: dns.${LOCAL_DOMAIN:?Set LOCAL_DOMAIN in .env}
+      DNS_SERVER_ADMIN_PASSWORD_FILE: /run/secrets/dns_admin_password
+      DNS_SERVER_RECURSION: AllowOnlyForPrivateNetworks
+      DNS_SERVER_FORWARDERS: 1.1.1.1,9.9.9.9
+      DNS_SERVER_FORWARDER_PROTOCOL: Udp
+    secrets: [dns_admin_password]
+    ports:
+      - "${HOST_IP:?Set HOST_IP in .env}:53:53/udp"
+      - "${HOST_IP}:53:53/tcp"
+      - "127.0.0.1:5380:5380/tcp"
+    volumes:
+      - dns-data:/etc/dns
+    networks:
+      proxy:
+        ipv4_address: ${DNS_IP:-172.30.0.53}
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.dns.rule: Host(`dns.${LOCAL_DOMAIN}`)
+      traefik.http.services.dns.loadbalancer.server.port: "5380"
+
+  dns-init:
+    image: ${PYTHON_IMAGE:-python:3.13-alpine}
+    restart: "no"
+    depends_on:
+      technitium:
+        condition: service_started
+    environment:
+      LOCAL_DOMAIN: ${LOCAL_DOMAIN}
+      HOST_IP: ${HOST_IP}
+    secrets: [dns_admin_password]
+    volumes:
+      - ./scripts/dns-init.py:/scripts/dns-init.py:ro
+      - dns-acme:/credentials
+    entrypoint: [python, /scripts/dns-init.py]
+    networks: [proxy]
+
+  ca-init:
+    image: ${STEP_CA_IMAGE:-smallstep/step-ca:latest}
+    restart: "no"
+    environment:
+      LOCAL_DOMAIN: ${LOCAL_DOMAIN}
+    secrets: [ca_password]
+    volumes:
+      - ca-data:/home/step
+      - ca-public:/public
+      - ./scripts/ca-init.sh:/scripts/ca-init.sh:ro
+    # Named volumes start owned by root; initialize ownership before dropping privileges.
+    user: "0:0"
+    entrypoint: [/bin/sh, /scripts/ca-init.sh]
+    networks: [proxy]
+
+  step-ca:
+    image: ${STEP_CA_IMAGE:-smallstep/step-ca:latest}
+    restart: unless-stopped
+    depends_on:
+      ca-init:
+        condition: service_completed_successfully
+      dns-init:
+        condition: service_completed_successfully
+    command: [step-ca, /home/step/config/ca.json, --password-file, /run/secrets/ca_password]
+    secrets: [ca_password]
+    volumes:
+      - ca-data:/home/step
+    dns: ["${DNS_IP:-172.30.0.53}"]
+    networks: [proxy]
+    healthcheck:
+      test: [CMD, step, ca, health, --ca-url, "https://step-ca:9000", --root, /home/step/certs/root_ca.crt]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  traefik:
+    image: ${TRAEFIK_IMAGE:-traefik:v3}
+    restart: unless-stopped
+    depends_on:
+      step-ca:
+        condition: service_healthy
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=${PROXY_NETWORK:-local-proxy}
+      # Compose service name, rather than the generated container name.
+      - '--providers.docker.defaultRule=Host(`{{ index .Labels "com.docker.compose.service" | default .Name | normalize }}.${LOCAL_DOMAIN}`)'
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls.certresolver=stepca
+      - --certificatesresolvers.stepca.acme.caserver=https://step-ca:9000/acme/acme/directory
+      - --certificatesresolvers.stepca.acme.email=${ACME_EMAIL:?Set ACME_EMAIL in .env}
+      - --certificatesresolvers.stepca.acme.storage=/acme/acme.json
+      # step-ca defaults to 24-hour certificates; renew against that lifetime.
+      - --certificatesresolvers.stepca.acme.certificatesduration=24
+      - --certificatesresolvers.stepca.acme.dnschallenge.provider=technitium
+      - --certificatesresolvers.stepca.acme.dnschallenge.resolvers=${DNS_IP:-172.30.0.53}:53
+      - --certificatesresolvers.stepca.acme.dnschallenge.propagation.disableanschecks=true
+      - --log.level=INFO
+    environment:
+      LEGO_CA_CERTIFICATES: /ca/root_ca.crt
+      TECHNITIUM_SERVER_BASE_URL: http://technitium:5380
+      TECHNITIUM_API_TOKEN_FILE: /credentials/api-token
+    ports:
+      - "${HOST_IP}:80:80"
+      - "${HOST_IP}:443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ca-public:/ca:ro
+      - dns-acme:/credentials:ro
+      - acme-data:/acme
+    secrets: [dashboard_users]
+    networks: [proxy]
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.dashboard.rule: Host(`traefik.${LOCAL_DOMAIN}`)
+      traefik.http.routers.dashboard.service: api@internal
+      traefik.http.routers.dashboard.middlewares: dashboard-auth
+      traefik.http.middlewares.dashboard-auth.basicauth.usersfile: /run/secrets/dashboard_users
+
+  portainer:
+    image: ${PORTAINER_IMAGE:-portainer/portainer-ce:lts}
+    restart: unless-stopped
+    command: [--http-enabled, --admin-password-file, /run/secrets/portainer_password, --host, unix:///var/run/docker.sock]
+    secrets: [portainer_password]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
+    networks: [proxy]
+    labels:
+      traefik.enable: "true"
+      traefik.http.services.portainer.loadbalancer.server.port: "9000"
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-local-proxy}
+    ipam:
+      config:
+        - subnet: ${PROXY_SUBNET:-172.30.0.0/24}
+
+volumes:
+  dns-data:
+  dns-acme:
+  ca-data:
+  ca-public:
+  acme-data:
+  portainer-data:
+
+secrets:
+  dns_admin_password:
+    file: ./secrets/dns-admin-password
+  ca_password:
+    file: ./secrets/ca-password
+  dashboard_users:
+    file: ./secrets/dashboard-users
+  portainer_password:
+    file: ./secrets/portainer-password
