@@ -71,6 +71,26 @@ services:
       - ca-data:/home/step
     dns: ["${DNS_IP:-172.30.0.53}"]
     networks: [proxy]
+    # labels:
+    #   traefik.enable: "true"
+    #   traefik.http.routers.ca.rule: Host(`ca.${LOCAL_DOMAIN}`)
+    #   traefik.http.services.ca.loadbalancer.server.port: "9000"
+    labels:
+      - "traefik.enable=true"
+
+      # Router
+      - "traefik.http.routers.stepca.rule=Host(`ca.${LOCAL_DOMAIN}`)"
+      - "traefik.http.routers.stepca.entrypoints=websecure"
+      - "traefik.http.routers.stepca.tls=true"
+      - "traefik.http.routers.stepca.tls.certresolver=stepca"
+      - "traefik.http.routers.stepca.service=stepca"
+
+      # Backend
+      - "traefik.http.services.stepca.loadbalancer.server.port=9000"
+      - "traefik.http.services.stepca.loadbalancer.server.scheme=https"
+      - "traefik.http.services.stepca.loadbalancer.serverstransport=stepca@file"
+
+
     healthcheck:
       test: [CMD, step, ca, health, --ca-url, "https://step-ca:9000", --root, /home/step/certs/root_ca.crt]
       interval: 5s
@@ -88,6 +108,7 @@ services:
       - --api.dashboard=true
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
       - --providers.docker.network=${PROXY_NETWORK:-local-proxy}
       # Compose service name, rather than the generated container name.
       - '--providers.docker.defaultRule=Host(`{{ index .Labels "com.docker.compose.service" | default .Name | normalize }}.${LOCAL_DOMAIN}`)'
@@ -115,6 +136,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ca-public:/ca:ro
+      - ./config/traefik-dynamic.yaml:/etc/traefik/dynamic.yaml:ro
       - dns-acme:/credentials:ro
       - acme-data:/acme
     secrets: [dashboard_users]
@@ -123,11 +145,12 @@ services:
       traefik.enable: "true"
       traefik.http.routers.dashboard.rule: Host(`traefik.${LOCAL_DOMAIN}`)
       traefik.http.routers.dashboard.service: api@internal
-      traefik.http.routers.dashboard.middlewares: dashboard-auth
-      traefik.http.middlewares.dashboard-auth.basicauth.usersfile: /run/secrets/dashboard_users
+      # traefik.http.routers.dashboard.middlewares: dashboard-auth
+      # traefik.http.middlewares.dashboard-auth.basicauth.usersfile: /run/secrets/dashboard_users
 
   portainer:
-    image: ${PORTAINER_IMAGE:-portainer/portainer-ce:lts}
+    # image: ${PORTAINER_IMAGE:-portainer/portainer-ce:lts}
+    image: portainer/portainer-ee:lts
     restart: unless-stopped
     command: [--http-enabled, --admin-password-file, /run/secrets/portainer_password, --host, unix:///var/run/docker.sock]
     secrets: [portainer_password]

@@ -1,0 +1,408 @@
+
+
+========== HOST ==========
+
+$ hostnamectl
+ Static hostname: omarchy
+       Icon name: computer-laptop
+         Chassis: laptop 💻
+      Machine ID: 24c3e25476e7429587bae770b56cf3c5
+         Boot ID: 8f83ee39aa274c26a447155ae84efe67
+Operating System: Omarchy
+          Kernel: Linux 7.2.5-3-omarchy
+    Architecture: x86-64
+ Hardware Vendor: Intel_R_ Client Systems
+  Hardware Model: LAPQC71B
+    Hardware SKU: BQC71BBBU6000
+Hardware Version: K54906-301
+Firmware Version: QCCFL357.0150.2022.0523.1145
+   Firmware Date: Mon 2022-05-23
+    Firmware Age: 4y 5month 2w
+
+$ uname -a
+Linux omarchy 7.2.5-3-omarchy #1 SMP PREEMPT_DYNAMIC Mon, 14 Sep 2026 19:55:01 +0000 x86_64 GNU/Linux
+
+
+========== NETWORK INTERFACES ==========
+
+$ ip -br addr
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+enp61s0          UP             192.168.6.106/24 fe80::7310:eaa:c42a:8b4c/64 
+wlp62s0          UP             192.168.6.125/24 fe80::eb09:a571:c12c:2df9/64 
+br-25cd9b58aa42  DOWN           172.19.0.1/16 fe80::fc9a:caff:fe25:6cee/64 
+br-4eb7176741e2  UP             172.30.0.1/24 fe80::2098:6aff:fe44:fe70/64 
+br-b1ab4f05da14  DOWN           172.18.0.1/16 fe80::f8b1:4dff:fe92:39fa/64 
+docker0          DOWN           172.17.0.1/16 fe80::188e:12ff:fe16:2876/64 
+veth3c030c8@if2  UP             fe80::28d1:34ff:fe10:4374/64 
+veth3683576@if2  UP             fe80::c426:a0ff:fef2:6ae6/64 
+vethad8637a@if2  UP             fe80::c0d5:2eff:fe81:265b/64 
+veth0676ed2@if2  UP             fe80::b46c:8ff:fe65:8085/64 
+br-ddea912599af  UP             172.20.0.1/16 fe80::5cc8:c2ff:fe94:fe87/64 
+veth886b199@if2  UP             fe80::fc16:9dff:fe2b:486e/64 
+vetha478585@if2  UP             fe80::bc7d:f7ff:fee6:3f81/64 
+
+$ ip -d link show
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 allmulti 0 minmtu 0 maxmtu 0 netns-immutable addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+2: enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether b0:25:aa:30:75:63 brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 68 maxmtu 9194 addrgenmode none numtxqueues 1 numrxqueues 1 gso_max_size 64000 gso_max_segs 64 tso_max_size 64000 tso_max_segs 64 gro_max_size 65536 gso_ipv4_max_size 64000 gro_ipv4_max_size 65536 parentbus pci parentdev 0000:3d:00.0 
+    altname enxb025aa307563
+3: wlp62s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DORMANT group default qlen 1000
+    link/ether d0:ab:d5:1b:d9:29 brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 256 maxmtu 2304 netns-immutable addrgenmode none numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 65536 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 parentbus pci parentdev 0000:3e:00.0 
+    altname wlxd0abd51bd929
+4: br-25cd9b58aa42: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default qlen 0
+    link/ether fe:9a:ca:25:6c:ee brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 68 maxmtu 65535 netns-immutable 
+    bridge forward_delay 1500 hello_time 200 max_age 2000 ageing_time 30000 stp_state 0 stp_mode auto priority 32768 vlan_filtering 0 vlan_protocol 802.1Q bridge_id 8000.fe:9a:ca:25:6c:ee designated_root 8000.fe:9a:ca:25:6c:ee root_port 0 root_path_cost 0 topology_change 0 topology_change_detected 0 hello_timer    0.00 tcn_timer    0.00 topology_change_timer    0.00 gc_timer    0.00 fdb_n_learned 0 fdb_max_learned 0 vlan_default_pvid 1 vlan_stats_enabled 0 vlan_stats_per_port 0 group_fwd_mask 0 group_address 01:80:c2:00:00:00 mcast_snooping 1 no_linklocal_learn 0 mcast_vlan_snooping 0 mst_enabled 0 mdb_offload_fail_notification 0 fdb_local_vlan_0 0 mcast_router 1 mcast_query_use_ifaddr 0 mcast_querier 0 mcast_hash_elasticity 16 mcast_hash_max 4096 mcast_last_member_count 2 mcast_startup_query_count 2 mcast_last_member_interval 100 mcast_membership_interval 26000 mcast_querier_interval 25500 mcast_query_interval 12500 mcast_query_response_interval 1000 mcast_startup_query_interval 3125 mcast_stats_enabled 0 mcast_igmp_version 2 mcast_mld_version 1 nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0 addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+5: br-4eb7176741e2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 0
+    link/ether 22:98:6a:44:fe:70 brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 68 maxmtu 65535 netns-immutable 
+    bridge forward_delay 1500 hello_time 200 max_age 2000 ageing_time 30000 stp_state 0 stp_mode auto priority 32768 vlan_filtering 0 vlan_protocol 802.1Q bridge_id 8000.22:98:6a:44:fe:70 designated_root 8000.22:98:6a:44:fe:70 root_port 0 root_path_cost 0 topology_change 0 topology_change_detected 0 hello_timer    0.00 tcn_timer    0.00 topology_change_timer    0.00 gc_timer   59.86 fdb_n_learned 3 fdb_max_learned 0 vlan_default_pvid 1 vlan_stats_enabled 0 vlan_stats_per_port 0 group_fwd_mask 0 group_address 01:80:c2:00:00:00 mcast_snooping 1 no_linklocal_learn 0 mcast_vlan_snooping 0 mst_enabled 0 mdb_offload_fail_notification 0 fdb_local_vlan_0 0 mcast_router 1 mcast_query_use_ifaddr 0 mcast_querier 0 mcast_hash_elasticity 16 mcast_hash_max 4096 mcast_last_member_count 2 mcast_startup_query_count 2 mcast_last_member_interval 100 mcast_membership_interval 26000 mcast_querier_interval 25500 mcast_query_interval 12500 mcast_query_response_interval 1000 mcast_startup_query_interval 3125 mcast_stats_enabled 0 mcast_igmp_version 2 mcast_mld_version 1 nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0 addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+6: br-b1ab4f05da14: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default qlen 0
+    link/ether fa:b1:4d:92:39:fa brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 68 maxmtu 65535 netns-immutable 
+    bridge forward_delay 1500 hello_time 200 max_age 2000 ageing_time 30000 stp_state 0 stp_mode auto priority 32768 vlan_filtering 0 vlan_protocol 802.1Q bridge_id 8000.fa:b1:4d:92:39:fa designated_root 8000.fa:b1:4d:92:39:fa root_port 0 root_path_cost 0 topology_change 0 topology_change_detected 0 hello_timer    0.00 tcn_timer    0.00 topology_change_timer    0.00 gc_timer  193.26 fdb_n_learned 0 fdb_max_learned 0 vlan_default_pvid 1 vlan_stats_enabled 0 vlan_stats_per_port 0 group_fwd_mask 0 group_address 01:80:c2:00:00:00 mcast_snooping 1 no_linklocal_learn 0 mcast_vlan_snooping 0 mst_enabled 0 mdb_offload_fail_notification 0 fdb_local_vlan_0 0 mcast_router 1 mcast_query_use_ifaddr 0 mcast_querier 0 mcast_hash_elasticity 16 mcast_hash_max 4096 mcast_last_member_count 2 mcast_startup_query_count 2 mcast_last_member_interval 100 mcast_membership_interval 26000 mcast_querier_interval 25500 mcast_query_interval 12500 mcast_query_response_interval 1000 mcast_startup_query_interval 3125 mcast_stats_enabled 0 mcast_igmp_version 2 mcast_mld_version 1 nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0 addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+8: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN mode DEFAULT group default qlen 0
+    link/ether 1a:8e:12:16:28:76 brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 68 maxmtu 65535 netns-immutable 
+    bridge forward_delay 1500 hello_time 200 max_age 2000 ageing_time 30000 stp_state 0 stp_mode auto priority 32768 vlan_filtering 0 vlan_protocol 802.1Q bridge_id 8000.1a:8e:12:16:28:76 designated_root 8000.1a:8e:12:16:28:76 root_port 0 root_path_cost 0 topology_change 0 topology_change_detected 0 hello_timer    0.00 tcn_timer    0.00 topology_change_timer    0.00 gc_timer  258.79 fdb_n_learned 0 fdb_max_learned 0 vlan_default_pvid 1 vlan_stats_enabled 0 vlan_stats_per_port 0 group_fwd_mask 0 group_address 01:80:c2:00:00:00 mcast_snooping 1 no_linklocal_learn 0 mcast_vlan_snooping 0 mst_enabled 0 mdb_offload_fail_notification 0 fdb_local_vlan_0 0 mcast_router 1 mcast_query_use_ifaddr 0 mcast_querier 0 mcast_hash_elasticity 16 mcast_hash_max 4096 mcast_last_member_count 2 mcast_startup_query_count 2 mcast_last_member_interval 100 mcast_membership_interval 26000 mcast_querier_interval 25500 mcast_query_interval 12500 mcast_query_response_interval 1000 mcast_startup_query_interval 3125 mcast_stats_enabled 0 mcast_igmp_version 2 mcast_mld_version 1 nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0 addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+11: veth3c030c8@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-4eb7176741e2 state UP mode DEFAULT group default qlen 0
+    link/ether 2a:d1:34:10:43:74 brd ff:ff:ff:ff:ff:ff link-netnsid 2 promiscuity 1 allmulti 1 minmtu 68 maxmtu 65535 
+    veth 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8001 port_no 0x1 designated_port 32769 designated_cost 0 designated_bridge 8000.22:98:6a:44:fe:70 designated_root 8000.22:98:6a:44:fe:70 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off neigh_vlan_suppress off neigh_forward_grat off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off mab off addrgenmode eui64 numtxqueues 12 numrxqueues 12 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+12: veth3683576@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-4eb7176741e2 state UP mode DEFAULT group default qlen 0
+    link/ether c6:26:a0:f2:6a:e6 brd ff:ff:ff:ff:ff:ff link-netnsid 3 promiscuity 1 allmulti 1 minmtu 68 maxmtu 65535 
+    veth 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8002 port_no 0x2 designated_port 32770 designated_cost 0 designated_bridge 8000.22:98:6a:44:fe:70 designated_root 8000.22:98:6a:44:fe:70 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off neigh_vlan_suppress off neigh_forward_grat off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off mab off addrgenmode eui64 numtxqueues 12 numrxqueues 12 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+14: vethad8637a@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-4eb7176741e2 state UP mode DEFAULT group default qlen 0
+    link/ether c2:d5:2e:81:26:5b brd ff:ff:ff:ff:ff:ff link-netnsid 5 promiscuity 1 allmulti 1 minmtu 68 maxmtu 65535 
+    veth 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8003 port_no 0x3 designated_port 32771 designated_cost 0 designated_bridge 8000.22:98:6a:44:fe:70 designated_root 8000.22:98:6a:44:fe:70 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off neigh_vlan_suppress off neigh_forward_grat off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off mab off addrgenmode eui64 numtxqueues 12 numrxqueues 12 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+15: veth0676ed2@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-4eb7176741e2 state UP mode DEFAULT group default qlen 0
+    link/ether b6:6c:08:65:80:85 brd ff:ff:ff:ff:ff:ff link-netnsid 6 promiscuity 1 allmulti 1 minmtu 68 maxmtu 65535 
+    veth 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8004 port_no 0x4 designated_port 32772 designated_cost 0 designated_bridge 8000.22:98:6a:44:fe:70 designated_root 8000.22:98:6a:44:fe:70 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off neigh_vlan_suppress off neigh_forward_grat off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off mab off addrgenmode eui64 numtxqueues 12 numrxqueues 12 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+554: br-ddea912599af: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 0
+    link/ether 5e:c8:c2:94:fe:87 brd ff:ff:ff:ff:ff:ff promiscuity 0 allmulti 0 minmtu 68 maxmtu 65535 netns-immutable 
+    bridge forward_delay 1500 hello_time 200 max_age 2000 ageing_time 30000 stp_state 0 stp_mode auto priority 32768 vlan_filtering 0 vlan_protocol 802.1Q bridge_id 8000.5e:c8:c2:94:fe:87 designated_root 8000.5e:c8:c2:94:fe:87 root_port 0 root_path_cost 0 topology_change 0 topology_change_detected 0 hello_timer    0.00 tcn_timer    0.00 topology_change_timer    0.00 gc_timer   94.95 fdb_n_learned 0 fdb_max_learned 0 vlan_default_pvid 1 vlan_stats_enabled 0 vlan_stats_per_port 0 group_fwd_mask 0 group_address 01:80:c2:00:00:00 mcast_snooping 1 no_linklocal_learn 0 mcast_vlan_snooping 0 mst_enabled 0 mdb_offload_fail_notification 0 fdb_local_vlan_0 0 mcast_router 1 mcast_query_use_ifaddr 0 mcast_querier 0 mcast_hash_elasticity 16 mcast_hash_max 4096 mcast_last_member_count 2 mcast_startup_query_count 2 mcast_last_member_interval 100 mcast_membership_interval 26000 mcast_querier_interval 25500 mcast_query_interval 12500 mcast_query_response_interval 1000 mcast_startup_query_interval 3125 mcast_stats_enabled 0 mcast_igmp_version 2 mcast_mld_version 1 nf_call_iptables 0 nf_call_ip6tables 0 nf_call_arptables 0 addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+555: veth886b199@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ddea912599af state UP mode DEFAULT group default qlen 0
+    link/ether fe:16:9d:2b:48:6e brd ff:ff:ff:ff:ff:ff link-netnsid 0 promiscuity 1 allmulti 1 minmtu 68 maxmtu 65535 
+    veth 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8001 port_no 0x1 designated_port 32769 designated_cost 0 designated_bridge 8000.5e:c8:c2:94:fe:87 designated_root 8000.5e:c8:c2:94:fe:87 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off neigh_vlan_suppress off neigh_forward_grat off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off mab off addrgenmode eui64 numtxqueues 12 numrxqueues 12 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+556: vetha478585@if2: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master br-ddea912599af state UP mode DEFAULT group default qlen 0
+    link/ether be:7d:f7:e6:3f:81 brd ff:ff:ff:ff:ff:ff link-netnsid 1 promiscuity 1 allmulti 1 minmtu 68 maxmtu 65535 
+    veth 
+    bridge_slave state forwarding priority 32 cost 2 hairpin off guard off root_block off fastleave off learning on flood on port_id 0x8002 port_no 0x2 designated_port 32770 designated_cost 0 designated_bridge 8000.5e:c8:c2:94:fe:87 designated_root 8000.5e:c8:c2:94:fe:87 hold_timer    0.00 message_age_timer    0.00 forward_delay_timer    0.00 topology_change_ack 0 config_pending 0 proxy_arp off proxy_arp_wifi off mcast_router 1 mcast_fast_leave off mcast_flood on bcast_flood on mcast_to_unicast off neigh_suppress off neigh_vlan_suppress off neigh_forward_grat off group_fwd_mask 0 group_fwd_mask_str 0x0 vlan_tunnel off isolated off locked off mab off addrgenmode eui64 numtxqueues 12 numrxqueues 12 gso_max_size 65536 gso_max_segs 65535 tso_max_size 524280 tso_max_segs 65535 gro_max_size 65536 gso_ipv4_max_size 65536 gro_ipv4_max_size 65536 
+
+
+========== ROUTING ==========
+
+$ ip route
+default via 192.168.6.1 dev enp61s0 proto dhcp src 192.168.6.106 metric 100 
+default via 192.168.6.1 dev wlp62s0 proto dhcp src 192.168.6.125 metric 600 
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+172.18.0.0/16 dev br-b1ab4f05da14 proto kernel scope link src 172.18.0.1 linkdown 
+172.19.0.0/16 dev br-25cd9b58aa42 proto kernel scope link src 172.19.0.1 linkdown 
+172.20.0.0/16 dev br-ddea912599af proto kernel scope link src 172.20.0.1 
+172.30.0.0/24 dev br-4eb7176741e2 proto kernel scope link src 172.30.0.1 
+192.168.6.0/24 dev enp61s0 proto kernel scope link src 192.168.6.106 metric 100 
+192.168.6.0/24 dev wlp62s0 proto kernel scope link src 192.168.6.125 metric 600 
+
+$ ip -6 route
+fe80::/64 dev br-25cd9b58aa42 proto kernel metric 256 linkdown pref medium
+fe80::/64 dev br-b1ab4f05da14 proto kernel metric 256 linkdown pref medium
+fe80::/64 dev veth3c030c8 proto kernel metric 256 pref medium
+fe80::/64 dev br-4eb7176741e2 proto kernel metric 256 pref medium
+fe80::/64 dev veth3683576 proto kernel metric 256 pref medium
+fe80::/64 dev vethad8637a proto kernel metric 256 pref medium
+fe80::/64 dev veth0676ed2 proto kernel metric 256 pref medium
+fe80::/64 dev docker0 proto kernel metric 256 linkdown pref medium
+fe80::/64 dev veth886b199 proto kernel metric 256 pref medium
+fe80::/64 dev br-ddea912599af proto kernel metric 256 pref medium
+fe80::/64 dev vetha478585 proto kernel metric 256 pref medium
+fe80::/64 dev enp61s0 proto kernel metric 1024 pref medium
+fe80::/64 dev wlp62s0 proto kernel metric 1024 pref medium
+
+$ ip rule
+0:	from all lookup local
+32766:	from all lookup main
+32767:	from all lookup default
+
+
+========== DNS ==========
+
+$ cat /etc/resolv.conf
+# This is /run/systemd/resolve/stub-resolv.conf managed by man:systemd-resolved(8).
+# Do not edit.
+#
+# This file might be symlinked as /etc/resolv.conf. If you're looking at
+# /etc/resolv.conf and seeing this text, you have followed the symlink.
+#
+# This is a dynamic resolv.conf file for connecting local clients to the
+# internal DNS stub resolver of systemd-resolved. This file lists all
+# configured search domains.
+#
+# Run "resolvectl status" to see details about the uplink DNS servers
+# currently in use.
+#
+# Third party programs should typically not access this file directly, but only
+# through the symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a
+# different way, replace this symlink by a static file or a different symlink.
+#
+# See man:systemd-resolved.service(8) for details about the supported modes of
+# operation for /etc/resolv.conf.
+
+nameserver 127.0.0.53
+options edns0 trust-ad
+search .
+
+$ resolvectl status
+Global
+           Protocols: -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+    resolv.conf mode: stub
+  Current DNS Server: 192.168.6.106
+         DNS Servers: 192.168.6.106
+Fallback DNS Servers: 9.9.9.9#dns.quad9.net 2620:fe::9#dns.quad9.net
+                      1.1.1.1#cloudflare-dns.com
+                      2606:4700:4700::1111#cloudflare-dns.com 8.8.8.8#dns.google
+                      2001:4860:4860::8888#dns.google
+          DNS Domain: ~dev.ip
+
+Link 11 (veth3c030c8)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 554 (br-ddea912599af)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 6 (br-b1ab4f05da14)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 12 (veth3683576)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 4 (br-25cd9b58aa42)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 3 (wlp62s0)
+    Current Scopes: DNS
+         Protocols: +DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+Current DNS Server: 192.168.6.1
+       DNS Servers: 192.168.6.145 192.168.6.1
+     Default Route: yes
+
+Link 555 (veth886b199)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 14 (vethad8637a)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 8 (docker0)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 556 (vetha478585)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 5 (br-4eb7176741e2)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+Link 2 (enp61s0)
+    Current Scopes: DNS
+         Protocols: +DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+Current DNS Server: 192.168.6.1
+       DNS Servers: 192.168.6.145 192.168.6.1
+     Default Route: yes
+
+Link 15 (veth0676ed2)
+    Current Scopes: none
+         Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
+     Default Route: no
+
+
+========== LISTENING PORTS ==========
+
+$ ss -tuln
+Netid State  Recv-Q Send-Q Local Address:Port  Peer Address:Port
+udp   UNCONN 0      0        224.0.0.251:5353       0.0.0.0:*
+udp   UNCONN 0      0        224.0.0.251:5353       0.0.0.0:*
+udp   UNCONN 0      0        224.0.0.251:5353       0.0.0.0:*
+udp   UNCONN 0      0        224.0.0.251:5353       0.0.0.0:*
+udp   UNCONN 0      0            0.0.0.0:5353       0.0.0.0:*
+udp   UNCONN 0      0      192.168.6.106:53         0.0.0.0:*
+udp   UNCONN 0      0         172.17.0.1:53         0.0.0.0:*
+udp   UNCONN 0      0         127.0.0.54:53         0.0.0.0:*
+udp   UNCONN 0      0      127.0.0.53%lo:53         0.0.0.0:*
+udp   UNCONN 0      0               [::]:5353          [::]:*
+tcp   LISTEN 0      4096       127.0.0.1:4306       0.0.0.0:*
+tcp   LISTEN 0      128          0.0.0.0:22         0.0.0.0:*
+tcp   LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*
+tcp   LISTEN 0      4096       127.0.0.1:5380       0.0.0.0:*
+tcp   LISTEN 0      4096      172.17.0.1:53         0.0.0.0:*
+tcp   LISTEN 0      4096       127.0.0.1:6379       0.0.0.0:*
+tcp   LISTEN 0      4096   192.168.6.106:53         0.0.0.0:*
+tcp   LISTEN 0      4096   192.168.6.106:80         0.0.0.0:*
+tcp   LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*
+tcp   LISTEN 0      4096   192.168.6.106:443        0.0.0.0:*
+tcp   LISTEN 0      4096       127.0.0.1:631        0.0.0.0:*
+tcp   LISTEN 0      4096       127.0.0.1:41771      0.0.0.0:*
+tcp   LISTEN 0      128        127.0.0.1:44239      0.0.0.0:*
+tcp   LISTEN 0      128             [::]:22            [::]:*
+tcp   LISTEN 0      4096               *:9100             *:*
+tcp   LISTEN 0      511            [::1]:4173          [::]:*
+tcp   LISTEN 0      4096           [::1]:631           [::]:*
+
+
+========== NETWORK BRIDGES ==========
+
+$ bridge link show
+11: veth3c030c8@enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br-4eb7176741e2 state forwarding priority 32 cost 2 
+12: veth3683576@enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br-4eb7176741e2 state forwarding priority 32 cost 2 
+14: vethad8637a@enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br-4eb7176741e2 state forwarding priority 32 cost 2 
+15: veth0676ed2@enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br-4eb7176741e2 state forwarding priority 32 cost 2 
+555: veth886b199@enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br-ddea912599af state forwarding priority 32 cost 2 
+556: vetha478585@enp61s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br-ddea912599af state forwarding priority 32 cost 2 
+
+$ bridge vlan show
+port              vlan-id  
+br-25cd9b58aa42   1 PVID Egress Untagged
+br-4eb7176741e2   1 PVID Egress Untagged
+br-b1ab4f05da14   1 PVID Egress Untagged
+docker0           1 PVID Egress Untagged
+veth3c030c8       1 PVID Egress Untagged
+veth3683576       1 PVID Egress Untagged
+vethad8637a       1 PVID Egress Untagged
+veth0676ed2       1 PVID Egress Untagged
+br-ddea912599af   1 PVID Egress Untagged
+veth886b199       1 PVID Egress Untagged
+vetha478585       1 PVID Egress Untagged
+
+
+========== DOCKER CONTAINERS ==========
+
+$ docker ps -a --format table {{.Names}}\t{{.Image}}\t{{.Status}}\t{{.Ports}}
+NAMES                         IMAGE                                                  STATUS                      PORTS
+seek-applier-redis-1          redis:7-alpine                                         Up 6 hours (healthy)        127.0.0.1:6379->6379/tcp
+seek-applier-mariadb-1        mariadb:11                                             Up 6 hours (healthy)        127.0.0.1:4306->3306/tcp
+local-env-portainer-1         portainer/portainer-ee:2.45.2                          Up 17 hours                 8000/tcp, 9000/tcp, 9443/tcp
+link-resolver-api-1           ghcr.io/chatterino/api:latest                          Exited (143) 16 hours ago   
+link-resolver-pg_exporter-1   quay.io/prometheuscommunity/postgres-exporter:latest   Exited (2) 16 hours ago     
+link-resolver-db-1            postgres:15-alpine                                     Exited (0) 16 hours ago     
+link-resolver-prometheus-1    prom/prometheus:latest                                 Exited (0) 16 hours ago     
+local-env-dns-init-1          python:3.13-alpine                                     Exited (0) 2 weeks ago      
+local-env-traefik-1           traefik:v3                                             Up 17 hours                 192.168.6.106:80->80/tcp, 192.168.6.106:443->443/tcp
+local-env-technitium-1        technitium/dns-server:latest                           Up 17 hours                 80/tcp, 67/udp, 443/tcp, 443/udp, 853/tcp, 8053/tcp, 192.168.6.106:53->53/tcp, 192.168.6.106:53->53/udp, 853/udp, 53443/tcp, 127.0.0.1:5380->5380/tcp
+local-env-step-ca-1           smallstep/step-ca:latest                               Up 17 hours (healthy)       
+local-env-ca-init-1           smallstep/step-ca:latest                               Exited (0) 2 weeks ago      
+intelligent_margulis          ghcr.io/francozanardi/tscaps-web:latest                Exited (137) 2 weeks ago    
+dreamy_stonebraker            ghcr.io/francozanardi/tscaps-web:latest                Created                     
+hopeful_cartwright            ghcr.io/francozanardi/tscaps-web:latest                Created                     
+inspiring_hodgkin             ghcr.io/francozanardi/tscaps-web:latest                Exited (0) 2 weeks ago      
+enjidev-phpmyadmin-1          phpmyadmin:5-apache                                    Exited (0) 17 hours ago     
+mars-pgadmin                  dpage/pgadmin4:8                                       Exited (0) 17 hours ago     
+mars-redisinsight             redis/redisinsight:latest                              Exited (0) 17 hours ago     
+enjidev-chat-backend-1        enjidev-chat-backend:local                             Exited (2) 17 hours ago     
+mars-centrifugo               centrifugo/centrifugo:v5                               Exited (0) 17 hours ago     
+mars-postgres                 postgres:16-alpine                                     Exited (0) 17 hours ago     
+mars-redis                    redis:7-alpine                                         Exited (0) 17 hours ago     
+enjidev-mariadb-1             mariadb:11                                             Exited (0) 17 hours ago     
+seek-applier-phpmyadmin-1     phpmyadmin:5                                           Exited (0) 2 weeks ago      
+
+
+========== DOCKER NETWORKS ==========
+
+$ docker network ls
+NETWORK ID     NAME                    DRIVER    SCOPE
+3178bd93c496   bridge                  bridge    local
+b1ab4f05da14   enjidev_default         bridge    local
+73f427e264ab   host                    host      local
+25cd9b58aa42   link-resolver_default   bridge    local
+4eb7176741e2   local-proxy             bridge    local
+7298fd7a613a   none                    null      local
+ddea912599af   seek-applier_default    bridge    local
+
+
+========== DOCKER NETWORK DETAILS ==========
+Name: bridge
+Driver: bridge
+Subnet: 172.17.0.0/16 
+Gateway: 172.17.0.1 
+Containers: 
+Name: enjidev_default
+Driver: bridge
+Subnet: 172.18.0.0/16 
+Gateway: 172.18.0.1 
+Containers: 
+Name: host
+Driver: host
+Subnet: 
+Gateway: 
+Containers: 
+Name: link-resolver_default
+Driver: bridge
+Subnet: 172.19.0.0/16 
+Gateway: 172.19.0.1 
+Containers: 
+Name: local-proxy
+Driver: bridge
+Subnet: 172.30.0.0/24 
+Gateway: 172.30.0.1 
+Containers: local-env-step-ca-1=172.30.0.4/24 local-env-portainer-1=172.30.0.3/24 local-env-traefik-1=172.30.0.2/24 local-env-technitium-1=172.30.0.53/24 
+Name: none
+Driver: null
+Subnet: 
+Gateway: 
+Containers: 
+Name: seek-applier_default
+Driver: bridge
+Subnet: 172.20.0.0/16 
+Gateway: 172.20.0.1 
+Containers: seek-applier-redis-1=172.20.0.3/16 seek-applier-mariadb-1=172.20.0.2/16 
+
+
+========== CONTAINER NETWORK MEMBERSHIP ==========
+/seek-applier-redis-1 | redis:7-alpine | seek-applier_default=172.20.0.3 
+/seek-applier-mariadb-1 | mariadb:11 | seek-applier_default=172.20.0.2 
+/local-env-portainer-1 | portainer/portainer-ee:2.45.2 | local-proxy=172.30.0.3 
+/link-resolver-api-1 | ghcr.io/chatterino/api:latest | link-resolver_default=invalid IP 
+/link-resolver-pg_exporter-1 | quay.io/prometheuscommunity/postgres-exporter:latest | link-resolver_default=invalid IP 
+/link-resolver-db-1 | postgres:15-alpine | link-resolver_default=invalid IP 
+/link-resolver-prometheus-1 | prom/prometheus:latest | link-resolver_default=invalid IP 
+/local-env-dns-init-1 | python:3.13-alpine | local-proxy=invalid IP 
+/local-env-traefik-1 | traefik:v3 | local-proxy=172.30.0.2 
+/local-env-technitium-1 | technitium/dns-server:latest | local-proxy=172.30.0.53 
+/local-env-step-ca-1 | smallstep/step-ca:latest | local-proxy=172.30.0.4 
+/local-env-ca-init-1 | smallstep/step-ca:latest | local-proxy=invalid IP 
+/intelligent_margulis | ghcr.io/francozanardi/tscaps-web:latest | bridge=invalid IP 
+/dreamy_stonebraker | ghcr.io/francozanardi/tscaps-web:latest | bridge=invalid IP 
+/hopeful_cartwright | ghcr.io/francozanardi/tscaps-web:latest | bridge=invalid IP 
+/inspiring_hodgkin | ghcr.io/francozanardi/tscaps-web:latest | bridge=invalid IP 
+/enjidev-phpmyadmin-1 | phpmyadmin:5-apache | enjidev_default=invalid IP 
+/mars-pgadmin | dpage/pgadmin4:8 | enjidev_default=invalid IP 
+/mars-redisinsight | redis/redisinsight:latest | enjidev_default=invalid IP 
+/enjidev-chat-backend-1 | enjidev-chat-backend:local | host=invalid IP 
+/mars-centrifugo | centrifugo/centrifugo:v5 | enjidev_default=invalid IP 
+/mars-postgres | postgres:16-alpine | enjidev_default=invalid IP 
+/mars-redis | redis:7-alpine | enjidev_default=invalid IP 
+/enjidev-mariadb-1 | mariadb:11 | enjidev_default=invalid IP 
+/seek-applier-phpmyadmin-1 | phpmyadmin:5 | seek-applier_default=invalid IP 
+
+
+========== VIRTUAL MACHINES ==========
+
+
+========== WIREGUARD ==========

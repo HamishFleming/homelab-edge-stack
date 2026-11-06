@@ -1,0 +1,6 @@
+http:
+  serversTransports:
+    stepca:
+      serverName: step-ca
+      rootCAs:
+        - /ca/root_ca.crt

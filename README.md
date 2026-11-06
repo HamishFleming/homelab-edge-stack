@@ -30,6 +30,46 @@ Ports TCP/UDP 53 and TCP 80/443 on `HOST_IP` must be available. The DNS console
 also binds to `127.0.0.1:5380` for recovery. Bindings are restricted to `HOST_IP`;
 allow your LAN through the host firewall and keep these services private.
 
+### Use an existing AdGuard Home server
+
+For AdGuard at `192.168.6.188` and this stack at `192.168.6.106` with
+`LOCAL_DOMAIN=dev.ip`, configure AdGuard's **Settings → DNS settings → Upstream
+DNS servers** with your normal public upstreams plus:
+
+```text
+[/dev.ip/]192.168.6.106
+```
+
+Set router DHCP DNS to **only** `192.168.6.188`, then renew client leases.
+Advertising the router or public DNS alongside AdGuard can bypass filtering.
+Keep Technitium's public forwarders as configured; forwarding it back to AdGuard
+can create a loop if AdGuard sends general queries to Technitium.
+Keep step-ca and Traefik's DNS challenge resolver pointed directly at Technitium.
+
+On this workstation, the systemd-resolved `~dev.ip` route uses Technitium directly.
+Both active NetworkManager LAN profiles use AdGuard with `ipv4.ignore-auto-dns`
+and `ipv6.ignore-auto-dns` enabled, and `ipv4.dns-search=~.` routes other names
+through AdGuard. The explicit root routing domain prevents the global Technitium
+DNS setting from also handling public queries. Browser secure DNS can still
+bypass system DNS.
+
+Verify both AdGuard itself and the client's default resolver:
+
+```sh
+dig @192.168.6.188 portainer.dev.ip A
+dig @192.168.6.188 doubleclick.net A
+dig portainer.dev.ip A
+dig doubleclick.net A
+```
+
+The local hostname should return `192.168.6.106`. With the current AdGuard
+filters, `doubleclick.net` returns `0.0.0.0`.
+Docker macvlan isolates a container from its own host: if these direct queries
+fail only on the AdGuard host, it needs a host macvlan interface with a reserved
+address and a route to the container, or a separate bridge path. Other LAN
+machines do not require that workaround. Each HTTPS client must also trust this
+stack's root certificate as described below.
+
 After startup, export the public root certificate:
 
 ```sh
@@ -141,7 +181,10 @@ step-ca's 24-hour certificate lifetime is reflected in Traefik's renewal setting
 Traefik redirects HTTP to HTTPS. There is no TLS verification bypass.
 
 The CA endpoint is `https://step-ca:9000/acme/acme/directory` inside the proxy
-network. It is intentionally not published to the LAN. The ACME provisioner
+network. The `ca.<LOCAL_DOMAIN>` HTTPS router also exposes the CA through Traefik
+to the LAN. Its backend transport verifies the CA using `/ca/root_ca.crt` and
+the `step-ca` server name; the router obtains its own certificate over ACME.
+The ACME provisioner
 allows certificates for names whose DNS challenges it can validate. Restrict
 network membership to trusted containers; this setup does not add issuance
 policies or external account binding.
